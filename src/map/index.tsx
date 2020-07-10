@@ -2,6 +2,9 @@ import React, { useEffect } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import IndoorMapLoader from "utils/IndoorMapLoader";
+import Scaffold from "objects/Scaffold"
+
+const mapUrl = './data/map1.json'
 
 function Map() {
   let scene: THREE.Scene;
@@ -33,9 +36,9 @@ function Map() {
 
     window.addEventListener('resize', resize, false)
 
-    loadMap("./data/map1.json");
-    createLight();
+    loadMap(mapUrl);
     animate();
+    makeScaffold();
   };
 
   const animate = () => {
@@ -47,7 +50,6 @@ function Map() {
   const loadMap = (fileName: string) => {
     var loader = new IndoorMapLoader();
     loader.load(fileName, (mall) => {
-      console.log(mall);
       scene.add(mall.root);
       scene.userData.mall = mall;
       renderer.setClearColor("#F2F2F2");
@@ -55,13 +57,9 @@ function Map() {
     });
   };
 
-  //set up the lights
-  const createLight = () => {
-    let alight = new THREE.AmbientLight(0xffffff, 0.2);
-    scene.add(alight);
-    let hlight = new THREE.HemisphereLight(0xffffff, 0x000000, 0.9);
-    scene.add(hlight);
-  };
+  const makeScaffold = () => {
+    Scaffold.createLight(scene);
+  }
 
   const resize = () => {
     let width = window.innerWidth;
