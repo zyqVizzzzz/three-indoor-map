@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import IndoorMapLoader from "Utils/IndoorMapLoader";
+import IndoorMapLoader from "utils/IndoorMapLoader";
 
 function Map() {
   let scene = null;

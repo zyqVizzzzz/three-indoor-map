@@ -1,7 +1,7 @@
 import * as THREE from "three";
-import Mall from "Objects/Mall";
-import Geometry, { FLOOR_HEIGHT, SCALE } from "Objects/Geometry";
-import { getBoundingRect } from "Utils/Common";
+import Mall from "objects/Mall";
+import Geometry, { FLOOR_HEIGHT, SCALE } from "objects/Geometry";
+import { getBoundingRect } from "utils/Common";
 
 class IndoorMapLoader extends THREE.Loader {
   load(url, callback, texturePath) {

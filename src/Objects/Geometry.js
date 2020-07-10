@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { room, FLOOR, BUILDING, WIRE } from "Utils/Themes";
+import { room, FLOOR, BUILDING, WIRE } from "utils/Themes";
 
 export const OFFSET = 600;
 export const FLOOR_OFFSET = 5;
