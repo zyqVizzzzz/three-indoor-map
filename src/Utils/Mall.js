@@ -69,7 +69,7 @@ class Mall {
     this.root.add(this.building);
     let offset = 4;
     for (let i = 0; i < this.floors.length; i++) {
-      this.floors[i].position.set(0, -50, i * this.floors[i].height * offset);
+      this.floors[i].position.set(0, 0, i * this.floors[i].height * offset);
       this.root.add(this.floors[i]);
     }
     this.building.scale.set(1, 1, offset);

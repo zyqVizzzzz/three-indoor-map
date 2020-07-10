@@ -9,6 +9,7 @@ yarn start
 
 ## Feature
 - Map Loader (finish)
+- Single-Multi Floor Switch
 - Multi-Themes/Scenes
 - Track Animation
 - Shining Animation

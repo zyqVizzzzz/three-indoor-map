@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import Mall from "./Mall";
-import Geometry from './Geometry';
+import Geometry, { FLOOR_HEIGHT, SCALE } from "./Geometry";
 import { getBoundingRect } from "./Common";
 
 class IndoorMapLoader extends THREE.Loader {
@@ -27,7 +27,7 @@ class ParseModel {
     this.mall = new Mall();
   }
   parse() {
-    let building, points, scale = 0.1;
+    let building, points;
     //floor geometry
     for (let i = 0; i < this.json.data.Floors.length; i++) {
       let floor = this.json.data.Floors[i];
@@ -35,7 +35,7 @@ class ParseModel {
       points = this._parsePoints(floor.Outline[0][0]);
 
       let floorObj = new THREE.Object3D();
-      floorObj.height = 80.0;
+      floorObj.height = FLOOR_HEIGHT;
       floorObj.add(this.geometry.setFloor(points));
       floorObj.points = [];
       floorObj._id = floor._id;
@@ -48,16 +48,16 @@ class ParseModel {
 
         points = this._parsePoints(funcArea.Outline[0][0]);
         floorObj.add(this.geometry.setModel(points, funcArea));
-        floorObj.add(this.geometry.setWire(points));
+        // floorObj.add(this.geometry.setWire(points));
 
         const center = funcArea.Center;
         floorObj.points.push({
           name: funcArea.Name,
           type: funcArea.Type,
           position: new THREE.Vector3(
-            center[0] * scale,
-            50.0 * scale,
-            -center[1] * scale
+            center[0] * SCALE,
+            FLOOR_HEIGHT * SCALE,
+            -center[1] * SCALE
           ),
         });
       }
@@ -70,9 +70,9 @@ class ParseModel {
           name: pubPoint.Name,
           type: pubPoint.Type,
           position: new THREE.Vector3(
-            point.x * scale,
-            50.0 * scale,
-            -point.y * scale
+            point.x * SCALE,
+            FLOOR_HEIGHT * SCALE,
+            -point.y * SCALE
           ),
         });
       }
@@ -86,9 +86,9 @@ class ParseModel {
       this.mall.building = this.geometry.setBuilding(points);
     }
 
-    //scale the mall
+    //SCALE the mall
     this.mall.root = new THREE.Object3D();
-    this.mall.root.scale.set(scale, scale, scale);
+    this.mall.root.scale.set(SCALE, SCALE, SCALE);
     this.mall.root.rotateOnAxis(new THREE.Vector3(1, 0, 0), -Math.PI / 2);
 
     return this.mall;

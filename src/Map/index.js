@@ -16,19 +16,19 @@ function Map() {
   const _init = () => {
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(
-      45,
+      25,
       window.innerWidth / window.innerHeight,
       0.1,
       2000
     );
-    camera.position.set(300, 200, 300);
+    camera.position.set(360, 250, 700);
     renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
 
     controls = new OrbitControls(camera, renderer.domElement);
     document.body.appendChild(renderer.domElement);
 
-    loadMap("./data/map2.json");
+    loadMap("./data/map1.json");
     createLight();
     animate();
   };
@@ -51,13 +51,10 @@ function Map() {
 
   //set up the lights
   const createLight = () => {
-    let light = new THREE.DirectionalLight(0xffffff);
-    light.position.set(-500, 500, -500);
-    scene.add(light);
-
-    light = new THREE.DirectionalLight(0xffffff);
-    light.position.set(500, 500, 500);
-    scene.add(light);
+    let light = new THREE.AmbientLight(0xffffff, 0.2)
+    scene.add(light)
+    light = new THREE.HemisphereLight(0xffffff, 0x000000, 0.9)
+    scene.add(light)
   };
 
   return <div id="canvas" />;
