@@ -21,14 +21,15 @@ function Map() {
       0.1,
       2000
     );
-    camera.position.set(300, 200, 100)
+    camera.position.set(300, 200, 300);
     renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
 
     controls = new OrbitControls(camera, renderer.domElement);
     document.body.appendChild(renderer.domElement);
-    
+
     loadMap("./data/map2.json");
+    createLight();
     animate();
   };
 
@@ -46,6 +47,17 @@ function Map() {
       renderer.setClearColor("#F2F2F2");
       mall.showAllFloors();
     });
+  };
+
+  //set up the lights
+  const createLight = () => {
+    let light = new THREE.DirectionalLight(0xffffff);
+    light.position.set(-500, 500, -500);
+    scene.add(light);
+
+    light = new THREE.DirectionalLight(0xffffff);
+    light.position.set(500, 500, 500);
+    scene.add(light);
   };
 
   return <div id="canvas" />;

@@ -99,3 +99,23 @@ export function room(type, category) {
   }
   return roomStyle;
 }
+
+export const FLOOR = {
+  color: "#E0E0E0",
+  opacity: 1,
+  transparent: false,
+};
+
+export const BUILDING = {
+  color: "#000000",
+  opacity: 0.1,
+  transparent: true,
+  depthTest: false,
+};
+
+export const WIRE = {
+  color: "#5C4433",
+  opacity: 0.5,
+  transparent: true,
+  linewidth: 2,
+};
