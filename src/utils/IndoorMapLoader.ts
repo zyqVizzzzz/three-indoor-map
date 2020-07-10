@@ -4,10 +4,7 @@ import Geometry, { FLOOR_HEIGHT, SCALE } from "objects/Geometry";
 import { getBoundingRect } from "utils/Common";
 
 class IndoorMapLoader extends THREE.Loader {
-  load(url, callback, texturePath) {
-    this.fetchJSON(url, callback);
-  }
-  fetchJSON(url, callback) {
+  load(url: string, callback: (mall: Mall) => void) {
     fetch(url)
       .then((res) => res.json())
       .then((json) => {
@@ -15,13 +12,18 @@ class IndoorMapLoader extends THREE.Loader {
         callback(result);
       });
   }
-  parse(json) {
+  parse(json: any) {
     return new ParseModel(json).parse();
   }
 }
 
 class ParseModel {
-  constructor(json) {
+
+  public json: any;
+  public geometry: Geometry;
+  public mall: Mall;
+
+  constructor(json: any) {
     this.json = json;
     this.geometry = new Geometry();
     this.mall = new Mall();
@@ -35,10 +37,10 @@ class ParseModel {
       points = this._parsePoints(floor.Outline[0][0]);
 
       let floorObj = new THREE.Object3D();
-      floorObj.height = FLOOR_HEIGHT;
+      floorObj.userData.height = FLOOR_HEIGHT;
       floorObj.add(this.geometry.setFloor(points));
-      floorObj.points = [];
-      floorObj._id = floor._id;
+      floorObj.userData.points = []
+      floorObj.userData._id = floor._id;
       this.mall.floors.push(floorObj);
 
       // funcAreas geometry
@@ -48,10 +50,10 @@ class ParseModel {
 
         points = this._parsePoints(funcArea.Outline[0][0]);
         floorObj.add(this.geometry.setModel(points, funcArea));
-        // floorObj.add(this.geometry.setWire(points));
+        floorObj.add(this.geometry.setWire(points));
 
         const center = funcArea.Center;
-        floorObj.points.push({
+        floorObj.userData.points.push({
           name: funcArea.Name,
           type: funcArea.Type,
           position: new THREE.Vector3(
@@ -66,7 +68,7 @@ class ParseModel {
       for (let j = 0; j < floor.PubPoint.length; j++) {
         let pubPoint = floor.PubPoint[j];
         let point = this._parsePoints(pubPoint.Outline[0][0])[0];
-        floorObj.points.push({
+        floorObj.userData.points.push({
           name: pubPoint.Name,
           type: pubPoint.Type,
           position: new THREE.Vector3(
@@ -94,7 +96,7 @@ class ParseModel {
     return this.mall;
   }
 
-  _parsePoints(pointArray) {
+  _parsePoints(pointArray: Array<number>) {
     let shapePoints = [];
     for (let i = 0; i < pointArray.length; i += 2) {
       let point = new THREE.Vector2(pointArray[i], pointArray[i + 1]);

@@ -1,16 +1,35 @@
 import * as THREE from "three";
 import { room, FLOOR, BUILDING, WIRE } from "utils/Themes";
+import { Rect } from 'utils/Common'
 
-export const OFFSET = 600;
-export const FLOOR_OFFSET = 5;
-export const WIRE_OFFSET = 30;
-export const BUILD_HEIGHT = 500;
-export const FLOOR_HEIGHT = 80;
-export const MODEL_HEIGHT = 30;
-export const SCALE = 0.1;
+export const OFFSET: number = 600;
+export const FLOOR_OFFSET: number = 5;
+export const WIRE_OFFSET: number = 30;
+export const BUILD_HEIGHT: number = 500;
+export const FLOOR_HEIGHT: number = 80;
+export const MODEL_HEIGHT: number = 30;
+export const SCALE: number = 0.1;
+
+interface FuncArea {
+  Area: number;
+  Brand: number;
+  BrandShop: number;
+  Breif: string;
+  Category: number;
+  Category2: number;
+  Center: number[];
+  Name: string;
+  Name_en: string;
+  Outline: number[];
+  ShopNo: string;
+  Type: string;
+  dianping_id: number;
+  name: string;
+  rect: Rect;
+}
 
 export default class Geometry {
-  setBuilding(points) {
+  setBuilding(points: Array<THREE.Vector2>) {
     const shape = new THREE.Shape(points);
     const extrudeSettings = { amount: BUILD_HEIGHT, bevelEnabled: false };
     const geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
@@ -20,7 +39,7 @@ export default class Geometry {
     return mesh;
   }
 
-  setFloor(points) {
+  setFloor(points: Array<THREE.Vector2>) {
     const shape = new THREE.Shape(points);
     const geometry = new THREE.ShapeGeometry(shape);
     const material = new THREE.MeshBasicMaterial(FLOOR);
@@ -29,9 +48,12 @@ export default class Geometry {
     return mesh;
   }
 
-  setModel(points, funcArea) {
+  setModel(points: Array<THREE.Vector2>, funcArea: FuncArea) {
     const shape = new THREE.Shape(points);
-    const extrudeSettings = { amount: 30, bevelEnabled: false };
+    const extrudeSettings: THREE.ExtrudeGeometryOptions = {
+      depth: 30,
+      bevelEnabled: false,
+    };
     const geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
     const material = new THREE.MeshPhongMaterial(
       room(parseInt(funcArea.Type), funcArea.Category)
@@ -42,9 +64,9 @@ export default class Geometry {
     return mesh;
   }
 
-  setWire(points) {
+  setWire(points: Array<THREE.Vector2>) {
     const shape = new THREE.Shape(points);
-    const geometry = shape.createPointsGeometry();
+    const geometry = shape.createPointsGeometry(0);
     const material = new THREE.LineBasicMaterial(WIRE);
     const wire = new THREE.Line(geometry, material);
     wire.position.set(0, 0, -(OFFSET - WIRE_OFFSET));

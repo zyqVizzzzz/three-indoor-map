@@ -1,4 +1,4 @@
-An indoor 3D map build by react.js and three.js.
+An indoor 3D map build by react, typescript and three.js.
 
 ## Try
 
@@ -9,6 +9,7 @@ yarn start
 
 ## Feature
 - Map Loader (finish)
+- Text and Picture Sprites
 - Single-Multi Floor Switch
 - Multi-Themes/Scenes
 - Track Animation
@@ -16,6 +17,5 @@ yarn start
 - Interaction with User
 - Heat
 - Layer
-- Text/Icon Pin
 - Search
 ...

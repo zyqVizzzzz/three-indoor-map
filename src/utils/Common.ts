@@ -1,4 +1,18 @@
-export function getBoundingRect(points) {
+export class Rect {
+  public tl: Array<number>; //top left point
+  public br: Array<number>; //bottom right point
+  constructor(
+    minx: number = 0,
+    miny: number = 0,
+    maxx: number = 0,
+    maxy: number = 0
+  ) {
+    this.tl = [minx, miny];
+    this.br = [maxx, maxy];
+  }
+}
+
+export function getBoundingRect(points: Array<number>): Rect {
   let rect = new Rect();
   if (points.length < 2) {
     return rect;
@@ -24,9 +38,4 @@ export function getBoundingRect(points) {
   rect.tl = [minX, minY];
   rect.br = [maxX, maxY];
   return rect;
-}
-
-export function Rect(minx, miny, maxx, maxy) {
-  this.tl = [minx || 0, miny || 0]; //top left point
-  this.br = [maxx || 0, maxy || 0]; //bottom right point
 }

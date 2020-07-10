@@ -1,4 +1,4 @@
-export function room(type, category) {
+export function room(type: number, category?: number) {
   let roomStyle;
   if (!category) {
     switch (type) {
