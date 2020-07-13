@@ -1,9 +1,10 @@
 import * as THREE from "three";
 import Mall from "objects/Mall";
-import Geometry, { FLOOR_HEIGHT, SCALE } from "objects/Geometry";
+import Geometry from "objects/Geometry";
 import { getBoundingRect } from "utils/Common";
+import { FloorThemes, CommonThemes } from "utils/Themes";
 
-class IndoorMapLoader extends THREE.Loader {
+class MapLoader extends THREE.Loader {
   load(url: string, callback: (mall: Mall) => void) {
     fetch(url)
       .then((res) => res.json())
@@ -18,7 +19,6 @@ class IndoorMapLoader extends THREE.Loader {
 }
 
 class ParseModel {
-
   public json: any;
   public geometry: Geometry;
   public mall: Mall;
@@ -30,6 +30,8 @@ class ParseModel {
   }
   parse() {
     let building, points;
+    const { HEIGHT } = FloorThemes;
+    const { SCALE } = CommonThemes;
     //floor geometry
     for (let i = 0; i < this.json.data.Floors.length; i++) {
       let floor = this.json.data.Floors[i];
@@ -37,9 +39,9 @@ class ParseModel {
       points = this._parsePoints(floor.Outline[0][0]);
 
       let floorObj = new THREE.Object3D();
-      floorObj.userData.height = FLOOR_HEIGHT;
+      floorObj.userData.height = HEIGHT;
       floorObj.add(this.geometry.setFloor(points));
-      floorObj.userData.points = []
+      floorObj.userData.points = [];
       floorObj.userData._id = floor._id;
       this.mall.floors.push(floorObj);
 
@@ -58,7 +60,7 @@ class ParseModel {
           type: funcArea.Type,
           position: new THREE.Vector3(
             center[0] * SCALE,
-            FLOOR_HEIGHT * SCALE,
+            HEIGHT * SCALE,
             -center[1] * SCALE
           ),
         });
@@ -73,7 +75,7 @@ class ParseModel {
           type: pubPoint.Type,
           position: new THREE.Vector3(
             point.x * SCALE,
-            FLOOR_HEIGHT * SCALE,
+            HEIGHT * SCALE,
             -point.y * SCALE
           ),
         });
@@ -113,4 +115,4 @@ class ParseModel {
   }
 }
 
-export default IndoorMapLoader;
+export default MapLoader;

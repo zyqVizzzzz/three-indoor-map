@@ -1,44 +1,52 @@
-import React, { useEffect } from "react";
-import * as THREE from "three";
+import React, { useEffect, useCallback } from "react";
+import { MapState, useMappedState } from "reducers/Store";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import IndoorMapLoader from "utils/IndoorMapLoader";
-import Scaffold from "objects/Scaffold"
+import MapLoader from "map/MapLoader";
+import Scaffold from "objects/Scaffold";
 
-const mapUrl = './data/map1.json'
+import { CommonThemes } from "utils/Themes";
+
+const mapUrl = "./data/map1.json";
 
 function Map() {
-  let scene: THREE.Scene;
-  let camera: THREE.PerspectiveCamera;
-  let renderer: THREE.WebGLRenderer;
   let controls: OrbitControls;
-  const container: HTMLElement = document.body;
-  const width: number = window.innerWidth;
-  const height: number = window.innerHeight;
+  const {
+    camera: cameraThemes,
+    scene: sceneThemes,
+    renderer: rendererThemes,
+  } = CommonThemes;
+
+  const { scene, camera, renderer } = useMappedState(
+    useCallback(
+      (state: MapState) => {
+        const { x, y, z } = cameraThemes.position;
+        const { width, height, container } = sceneThemes;
+        const { clearColor } = rendererThemes;
+        const scene = state.scene;
+        const camera = state.camera;
+        const renderer = state.renderer;
+
+        camera.position.set(x, y, z);
+        renderer.setSize(width, height);
+        renderer.setClearColor(clearColor);
+        container.appendChild(renderer.domElement);
+
+        return { scene, camera, renderer };
+      },
+      [sceneThemes, cameraThemes, rendererThemes]
+    )
+  );
 
   useEffect(() => {
     _init();
   });
 
   const _init = () => {
-    scene = new THREE.Scene();
-    camera = new THREE.PerspectiveCamera(
-      25,
-      width / height,
-      0.1,
-      2000
-    );
-    camera.position.set(360, 250, 700);
-    renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(width, height);
-
-    controls = new OrbitControls(camera, renderer.domElement);
-    container.appendChild(renderer.domElement);
-
-    window.addEventListener('resize', resize, false)
-
     loadMap(mapUrl);
+    createScaffold();
+    createControls();
+    createListeners();
     animate();
-    makeScaffold();
   };
 
   const animate = () => {
@@ -48,26 +56,31 @@ function Map() {
   };
 
   const loadMap = (fileName: string) => {
-    var loader = new IndoorMapLoader();
+    const loader = new MapLoader();
     loader.load(fileName, (mall) => {
       scene.add(mall.root);
       scene.userData.mall = mall;
-      renderer.setClearColor("#F2F2F2");
       mall.showAllFloors();
     });
   };
 
-  const makeScaffold = () => {
-    Scaffold.createLight(scene);
-  }
-
   const resize = () => {
-    let width = window.innerWidth;
-    let height = window.innerHeight
+    const { width, height } = sceneThemes;
     camera.aspect = width / height;
     camera.updateProjectionMatrix();
-
     renderer.setSize(width, height);
+  };
+
+  const createControls = () => {
+    controls = new OrbitControls(camera, renderer.domElement);
+  };
+
+  const createScaffold = () => {
+    Scaffold.createLight(scene);
+  };
+
+  const createListeners = () => {
+    window.addEventListener("resize", resize, false);
   };
 
   return <div id="canvas" />;

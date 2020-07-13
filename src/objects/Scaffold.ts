@@ -1,4 +1,8 @@
-import { Scene, AmbientLight, HemisphereLight } from "three";
+import {
+  Scene,
+  AmbientLight,
+  HemisphereLight,
+} from "three";
 
 export default class Scaffold {
   static createLight(scene: Scene) {

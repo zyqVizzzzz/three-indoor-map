@@ -1,3 +1,69 @@
+export const CommonThemes = {
+  scene: {
+    width: window.innerWidth,
+    height: window.innerHeight,
+    container: document.body,
+  },
+  camera: {
+    position: { x: 360, y: 250, z: 700 },
+  },
+  renderer: {
+    clearColor: "#F2F2F2",
+  },
+  SCALE: 0.1
+};
+
+export const FloorThemes = {
+  MATERIAL: {
+    color: "#E0E0E0",
+    opacity: 1,
+    transparent: false,
+  },
+  OFFSET: 5,
+  HEIGHT: 80,
+};
+
+export const BuildingThemes = {
+  MATERIAL: {
+    color: "#000000",
+    opacity: 0.1,
+    transparent: true,
+    depthTest: false,
+  },
+  OFFSET: 600,
+  HEIGHT: 500
+}
+
+export const WireThemes = {
+  MATERIAL: {
+    color: "#5C4433",
+    opacity: 0.5,
+    transparent: true,
+    linewidth: 2,
+  },
+  OFFSET: 30
+}
+
+export const MaterialThemes = {
+  FLOOR: {
+    color: "#E0E0E0",
+    opacity: 1,
+    transparent: false,
+  },
+  BUILDING: {
+    color: "#000000",
+    opacity: 0.1,
+    transparent: true,
+    depthTest: false,
+  },
+  WIRE: {
+    color: "#5C4433",
+    opacity: 0.5,
+    transparent: true,
+    linewidth: 2,
+  },
+}
+
 export function room(type: number, category?: number) {
   let roomStyle;
   if (!category) {
@@ -99,23 +165,3 @@ export function room(type: number, category?: number) {
   }
   return roomStyle;
 }
-
-export const FLOOR = {
-  color: "#E0E0E0",
-  opacity: 1,
-  transparent: false,
-};
-
-export const BUILDING = {
-  color: "#000000",
-  opacity: 0.1,
-  transparent: true,
-  depthTest: false,
-};
-
-export const WIRE = {
-  color: "#5C4433",
-  opacity: 0.5,
-  transparent: true,
-  linewidth: 2,
-};

@@ -1,11 +1,15 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import 'style/normalized.css';
-import App from './App';
+import React from "react";
+import ReactDOM from "react-dom";
+import { StoreContext, makeStore } from "reducers/Store";
+import App from "./App";
+
+import "style/normalized.css";
+
+const store = makeStore();
 
 ReactDOM.render(
-  <React.StrictMode>
+  <StoreContext.Provider value={store}>
     <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+  </StoreContext.Provider>,
+  document.getElementById("root")
 );

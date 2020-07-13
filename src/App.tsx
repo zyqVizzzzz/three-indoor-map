@@ -1,5 +1,5 @@
-import React from 'react';
-import Map from 'map'
+import React from "react";
+import Map from "map";
 
 function App() {
   return (
