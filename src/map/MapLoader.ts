@@ -43,6 +43,7 @@ class ParseModel {
       floorObj.add(this.geometry.setFloor(points));
       floorObj.userData.points = [];
       floorObj.userData._id = floor._id;
+      floorObj.name = `floorGroup`
       this.mall.floors.push(floorObj);
 
       // funcAreas geometry
@@ -94,6 +95,7 @@ class ParseModel {
     this.mall.root = new THREE.Object3D();
     this.mall.root.scale.set(SCALE, SCALE, SCALE);
     this.mall.root.rotateOnAxis(new THREE.Vector3(1, 0, 0), -Math.PI / 2);
+    this.mall.root.name = 'mall'
 
     return this.mall;
   }

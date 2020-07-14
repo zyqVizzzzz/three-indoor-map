@@ -1,3 +1,4 @@
+import { Object3D } from "three";
 export class Rect {
   public tl: Array<number>; //top left point
   public br: Array<number>; //bottom right point
@@ -38,4 +39,21 @@ export function getBoundingRect(points: Array<number>): Rect {
   rect.tl = [minX, minY];
   rect.br = [maxX, maxY];
   return rect;
+}
+
+export function getChildByName(obj: Object3D, childName: string) {
+  let tmp: any = [];
+  const getChild = (obj: Object3D) => {
+    if (obj.name === childName) {
+      tmp.push(obj);
+    }
+    if (!obj.children || obj.children.length <= 0) {
+      return null;
+    }
+    obj.children.forEach((child) => {
+      getChild(child);
+    })
+    return tmp
+  };
+  return getChild(obj)
 }

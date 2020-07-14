@@ -7,6 +7,7 @@ import {
 } from "utils/Themes";
 import {FuncArea} from 'interface/map';
 
+
 export default class Geometry {
   setBuilding(points: Array<THREE.Vector2>) {
     const { MATERIAL, OFFSET, HEIGHT } = BuildingThemes;
@@ -16,6 +17,7 @@ export default class Geometry {
     const material = new THREE.MeshBasicMaterial(MATERIAL);
     const mesh = new THREE.Mesh(geometry, material);
     mesh.position.set(0, 0, -OFFSET);
+    mesh.name = 'building';
     return mesh;
   }
 
@@ -27,6 +29,8 @@ export default class Geometry {
     const material = new THREE.MeshBasicMaterial(MATERIAL);
     const mesh = new THREE.Mesh(geometry, material);
     mesh.position.set(0, 0, -(BUILDING_OFFSET + OFFSET));
+    mesh.name = 'floor'
+
     return mesh;
   }
 

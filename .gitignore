@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+/stub
 /.pnp
 .pnp.js
 
