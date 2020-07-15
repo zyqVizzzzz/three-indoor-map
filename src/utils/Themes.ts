@@ -5,7 +5,7 @@ export const CommonThemes = {
     container: document.body,
   },
   camera: {
-    position: { x: 360, y: 250, z: 700 },
+    position: { x: 0, y: 100, z: 100 },
   },
   renderer: {
     clearColor: "#F2F2F2",

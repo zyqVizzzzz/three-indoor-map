@@ -5,7 +5,7 @@ import App from "./App";
 
 import "style/normalized.css";
 
-const store = makeStore();
+export const store = makeStore();
 
 ReactDOM.render(
   <StoreContext.Provider value={store}>

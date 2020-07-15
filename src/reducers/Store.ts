@@ -7,11 +7,15 @@ export interface MapState {
   scene: THREE.Scene;
   camera: THREE.PerspectiveCamera;
   renderer: THREE.WebGLRenderer;
+  orbit: any;
 }
 
 export type Action = {
   type: "set scene";
   scene: THREE.Scene;
+} | {
+  type: "set orbit";
+  orbit: any;
 };
 
 export function makeStore(): Store<MapState, Action> {
@@ -27,6 +31,7 @@ export const INITIAL_STATE: MapState = {
     2000
   ),
   renderer: new THREE.WebGLRenderer({ antialias: true }),
+  orbit: null
 };
 
 export const { StoreContext, useDispatch, useMappedState } = create<

@@ -1,26 +1,24 @@
 import React, { useEffect, useCallback } from "react";
 import { MapState, useMappedState } from "reducers/Store";
 import * as THREE from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import MapLoader from "map/MapLoader";
 import Scaffold from "objects/Scaffold";
 import { getChildByName } from "utils/Common";
 import { CommonThemes } from "utils/Themes";
 
 const mapUrl = "./data/map1.json";
-var raycaster = new THREE.Raycaster();
-var mouse = new THREE.Vector2();
-var raycasterList: any = [];
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+let raycasterList: any = [];
 
 function Map() {
-  let controls: OrbitControls;
   const {
     camera: cameraThemes,
     scene: sceneThemes,
     renderer: rendererThemes,
   } = CommonThemes;
 
-  const { scene, camera, renderer } = useMappedState(
+  const { scene, camera, renderer, orbit } = useMappedState(
     useCallback(
       (state: MapState) => {
         const { x, y, z } = cameraThemes.position;
@@ -29,13 +27,14 @@ function Map() {
         const scene = state.scene;
         const camera = state.camera;
         const renderer = state.renderer;
+        const orbit = state.orbit;
 
         camera.position.set(x, y, z);
         renderer.setSize(width, height);
         renderer.setClearColor(clearColor);
         container.appendChild(renderer.domElement);
 
-        return { scene, camera, renderer };
+        return { scene, camera, renderer, orbit };
       },
       [sceneThemes, cameraThemes, rendererThemes]
     )
@@ -48,15 +47,13 @@ function Map() {
   const _init = () => {
     loadMap(mapUrl);
     createScaffold();
-    createControls();
     createListeners();
     animate();
   };
 
   const animate = () => {
     requestAnimationFrame(animate);
-
-    controls.update();
+    orbit && orbit.update();
     renderer.render(scene, camera);
   };
 
@@ -70,12 +67,11 @@ function Map() {
     });
   };
 
-  const createControls = () => {
-    controls = new OrbitControls(camera, renderer.domElement);
-  };
-
   const createScaffold = () => {
-    Scaffold.createLight(scene);
+    const scaffold = new Scaffold();
+    scaffold.createLight();
+    scaffold.createAxes();
+    scaffold.createOrbit();
   };
 
   const createListeners = () => {
@@ -85,7 +81,7 @@ function Map() {
 
   const resize = () => {
     const { width, height } = sceneThemes;
-    camera.aspect = width / height;
+    camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(width, height);
   };
@@ -98,9 +94,22 @@ function Map() {
     if (raycasterList.length) {
       let intersects = raycaster.intersectObjects(raycasterList);
       if (intersects.length) {
-        // (intersects[0].object as THREE.Mesh).material
+        switchFloor(intersects)
       }
     }
+  };
+
+  const switchFloor = (intersects: Array<any>) => {
+    //@ts-ignore
+    scene.getObjectByName("mall").children.forEach((item: any) => {
+      if (
+        item.userData._id !== (intersects[0].object as any).parent.userData._id
+      ) {
+        item.visible = false;
+      } else {
+        item.visible = true;
+      }
+    });
   };
 
   return <div id="canvas" />;

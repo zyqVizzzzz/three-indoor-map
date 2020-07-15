@@ -43,17 +43,18 @@ class ParseModel {
       floorObj.add(this.geometry.setFloor(points));
       floorObj.userData.points = [];
       floorObj.userData._id = floor._id;
-      floorObj.name = `floorGroup`
+      floorObj.name = `floorGroup`;
+      floorObj.position.z = 0
+
       this.mall.floors.push(floorObj);
 
       // funcAreas geometry
       for (let j = 0; j < floor.FuncAreas.length; j++) {
         let funcArea = floor.FuncAreas[j];
         funcArea.rect = getBoundingRect(funcArea.Outline[0][0]);
-
         points = this._parsePoints(funcArea.Outline[0][0]);
         floorObj.add(this.geometry.setModel(points, funcArea));
-        floorObj.add(this.geometry.setWire(points));
+        // floorObj.add(this.geometry.setWire(points));
 
         const center = funcArea.Center;
         floorObj.userData.points.push({
@@ -95,7 +96,7 @@ class ParseModel {
     this.mall.root = new THREE.Object3D();
     this.mall.root.scale.set(SCALE, SCALE, SCALE);
     this.mall.root.rotateOnAxis(new THREE.Vector3(1, 0, 0), -Math.PI / 2);
-    this.mall.root.name = 'mall'
+    this.mall.root.name = "mall";
 
     return this.mall;
   }
